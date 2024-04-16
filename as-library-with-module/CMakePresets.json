@@ -1,0 +1,123 @@
+{
+    "version": 5,
+    "configurePresets": [
+        {
+            "name": "config_base",
+            "hidden": true,
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "installDir": "${sourceDir}/dist/${presetName}",
+            "cacheVariables": {
+                "NAU_ROOT_DIR": "c:/proj/NauPrototype",
+                "NAU_BUILD_NAME": "${presetName}",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+                "CMAKE_SYSTEM_VERSION": "10.0",
+                "BUILD_SHARED_LIBS": true
+            }
+        },
+
+        {
+            "name": "vs_2022_base",
+            "hidden": true,
+            "generator": "Visual Studio 17 2022",
+            "cacheVariables": {
+                "CMAKE_GENERATOR_INSTANCE": "C:/Program Files/Microsoft Visual Studio/2022/Community",
+                "CMAKE_CONFIGURATION_TYPES": "Debug;Release"
+            },
+
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "hostOS": ["Windows"],
+                    "intelliSenseMode": "windows-msvc-x64"
+                }
+            }
+        },
+
+        {
+            "name": "win_ninja_clangcl_base",
+            "hidden": true,
+            "generator": "Ninja",
+            "cacheVariables": {
+                "CMAKE_CXX_COMPILER": "clang-cl.exe",
+                "CMAKE_C_COMPILER": "clang-cl.exe",
+                
+                "CMAKE_RC_COMPILER": "rc.exe",
+                "CMAKE_CL_SHOWINCLUDES_PREFIX": "Note: including file:"
+            },
+            
+            "vendor": {
+                "microsoft.com/VisualStudioSettings/CMake/1.0": {
+                    "hostOS": ["Windows"],
+                    "intelliSenseMode": "windows-clang-x64"
+                }
+            }
+        },
+
+        {
+            "name": "win_vs2022_x64",
+            "inherits": ["config_base", "vs_2022_base"],
+            "displayName": "Visual Studio Community 2022 x64",
+            "description": "Using compilers for Visual Studio 17 2022",
+            "hidden": false,
+            "toolset": {
+                "strategy": "set",
+                "value": "v143,host=x64"
+            },
+            "architecture": {
+                "strategy": "set",
+                "value": "x64"
+            }
+        },
+
+        {
+            "name": "win_ninja_clangcl",
+            "generator": "Ninja Multi-Config",
+            "inherits": ["config_base", "win_ninja_clangcl_base"],
+            "displayName": "Ninja with ClangCl (Multi-Config)",
+            "description": "Configure for ninja with clang-cl compiler",
+            "hidden": false,
+            "cacheVariables": {
+                "CMAKE_CONFIGURATION_TYPES": "Debug;Release"
+            }
+        },
+
+        {
+            "name": "win_ninja_clangcl-debug",
+            "inherits": ["config_base", "win_ninja_clangcl_base"],
+            "displayName": "Ninja with ClangCl (Debug)",
+            "description": "Configure for ninja with clang-cl compiler",
+            "hidden": false,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        }
+
+    ],
+    "buildPresets": [
+        {
+            "name": "VS Debug",
+            "displayName": "Visual Studio Community 2022 x64 Debug",
+            "configurePreset": "win_vs2022_x64",
+            "configuration": "Debug"
+        },
+        {
+            "name": "VS Release",
+            "displayName": "Visual Studio Community 2022 x64 Release",
+            "configurePreset": "win_vs2022_x64",
+            "configuration": "Release"
+        },
+
+        {
+            "name": "Ninja ClangCl Debug",
+            "displayName": "Ninja ClangCl (Debug)",
+            "configurePreset": "win_ninja_clangcl",
+            "configuration": "Debug"
+        },
+
+        {
+            "name": "Ninja ClangCl Release",
+            "displayName": "Ninja ClangCl (Release)",
+            "configurePreset": "win_ninja_clangcl",
+            "configuration": "Release"
+        }
+    ]
+}
